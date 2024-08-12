@@ -1,0 +1,12 @@
+kind: Module
+name: module-b
+type: test
+services:
+  - name: service-b
+    dependencies:
+      - service-a
+      - service-c
+build:
+  command: [echo, B]
+  dependencies:
+    - module-a

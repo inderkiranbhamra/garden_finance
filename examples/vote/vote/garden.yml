@@ -1,0 +1,56 @@
+kind: Build
+name: vote
+type: container
+
+---
+kind: Deploy
+description: The voting UI
+name: vote
+# repositoryUrl: http://github.com/garden-io/garden...
+type: container
+dependencies:
+  - build.vote
+  - deploy.api
+spec:
+  args: [npm, run, serve]
+  image: ${actions.build.vote.outputs.deploymentImageId}
+  sync:
+    paths:
+      - target: /app/src
+        source: src
+        mode: two-way
+  ports:
+    - name: http
+      containerPort: 8080
+  healthCheck:
+    httpGet:
+      path: /
+      port: http
+  ingresses:
+    - path: /
+      port: http
+      hostname: vote.${var.baseHostname}
+  env:
+    HOSTNAME: vote.${var.baseHostname}
+
+---
+kind: Test
+name: vote-unit
+type: container
+dependencies:
+  - build.vote
+spec:
+  args: [npm, run, test:unit]
+  image: ${actions.build.vote.outputs.deploymentImageId}
+
+---
+kind: Test
+name: vote-integ
+type: container
+dependencies:
+  - build.vote
+  - deploy.vote
+timeout: 60
+spec:
+  args: [npm, run, test:integ]
+  image: ${actions.build.vote.outputs.deploymentImageId}

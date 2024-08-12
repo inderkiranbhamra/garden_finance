@@ -1,0 +1,8 @@
+apiVersion: garden.io/v1
+kind: Project
+name: has-domain-and-id
+domain: https://example.invalid
+id: dummy-id
+environments:
+  - name: local
+  - name: other

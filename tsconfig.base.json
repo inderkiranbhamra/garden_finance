@@ -1,0 +1,47 @@
+{
+  "ts-node": {
+    // Tell ts-node CLI to install the --loader automatically, explained below
+    "esm": true
+  },
+  "compilerOptions": {
+    "allowJs": false,
+    "allowUnreachableCode": false,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "allowUnusedLabels": false,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "es5",
+      "es2015.promise",
+      "es2016",
+      "esnext",
+      "esnext.asynciterable",
+      "es2017",
+    ],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "preserveWatchOutput": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "inlineSourceMap": true,
+    "target": "ES2022",
+    "strict": true,
+  },
+  "exclude": [
+    "core/build",
+    "core/vendor",
+    "core/tmp",
+    "node_modules",
+    "**/node_modules",
+    "tmp"
+  ]
+}

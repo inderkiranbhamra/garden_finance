@@ -1,0 +1,76 @@
+kind: Deploy
+type: kubernetes
+name: with-source-module
+description: Simple Kubernetes module with minimum config that has a container source module
+spec:
+  sync:
+    paths:
+      - containerPath: "/app"
+        sourcePath: "."
+        target:
+          kind: Deployment
+          name: api-deployment
+          containerName: api
+
+  localMode:
+    target:
+      kind: Deployment
+      name: api-deployment
+      containerName: api
+    ports:
+      - local: 8090
+        remote: 80
+
+  manifests:
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: api-deployment
+        labels:
+          app: api
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: api
+        template:
+          metadata:
+            labels:
+              app: api
+          spec:
+            containers:
+              - name: api
+                image: ${actions.build.api-image.outputs.deployment-image-id}
+                args: [python, app.py]
+                ports:
+                  - containerPort: 80
+                readinessProbe:
+                  httpGet:
+                    path: /api
+                    port: 80
+
+---
+
+kind: "Test"
+type: "kubernetes-pod"
+name: "with-source-module-test"
+spec:
+  command: [sh, -c, "echo ok"]
+  resource:
+    kind: Deployment
+    name: api-deployment
+    containerModule: api-image
+    containerName: api
+
+---
+
+kind: "Run"
+type: "kubernetes-pod"
+name: "with-source-module-test"
+spec:
+  command: [sh, -c, "echo ok"]
+  resource:
+    kind: Deployment
+    name: api-deployment
+    containerModule: api-image
+    containerName: api

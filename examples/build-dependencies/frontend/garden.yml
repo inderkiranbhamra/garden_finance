@@ -1,0 +1,67 @@
+kind: Build
+name: frontend
+description: Frontend service container
+type: container
+
+dependencies:
+  - build.shared-config
+
+copyFrom:
+  - build: shared-config
+    sourcePath: "config.json"
+    targetPath: "config/"
+
+---
+kind: Deploy
+name: frontend
+description: Frontend service container
+type: container
+dependencies:
+  - build.frontend
+  - deploy.backend
+spec:
+  image: ${actions.build.frontend.outputs.deploymentImageId}
+  sync:
+    command: [npm, run, dev]
+    paths:
+      - source: .
+        target: /app
+        exclude: [node_modules]
+        mode: one-way
+      - source: ../shared-config/
+        target: /app/config/
+        exclude: [garden.yml]
+        mode: one-way-replica
+  ports:
+    - name: http
+      containerPort: 8080
+  healthCheck:
+    httpGet:
+      path: /hello-frontend
+      port: http
+  ingresses:
+    - path: /hello-frontend
+      port: http
+    - path: /call-backend
+      port: http
+
+---
+kind: Test
+name: frontend-unit
+type: container
+dependencies:
+  - build.frontend
+spec:
+  args: [npm, test]
+  image: ${actions.build.frontend.outputs.deploymentImageId}
+
+---
+kind: Test
+name: frontend-integ
+type: container
+dependencies:
+  - build.frontend
+  - deploy.frontend
+spec:
+  args: [npm, run, integ]
+  image: ${actions.build.frontend.outputs.deploymentImageId}

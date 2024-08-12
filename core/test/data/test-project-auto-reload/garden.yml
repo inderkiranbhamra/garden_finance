@@ -1,0 +1,6 @@
+kind: Project
+name: test-project-auto-reload
+environments:
+  - name: local
+providers:
+  - name: test-plugin

@@ -1,0 +1,5 @@
+module:
+  name: module-b
+  type: exec
+  build:
+    command: [echo, project]

@@ -1,0 +1,9 @@
+apiVersion: garden.io/v1
+kind: Project
+name: login
+domain: https://example.invalid
+id: dummy-id
+environments:
+  - name: test
+variables:
+  foo: ${secrets.foo}

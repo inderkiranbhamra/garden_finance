@@ -1,0 +1,77 @@
+kind: Build
+name: frontend
+description: Frontend service container image
+type: container
+include: ["."]
+
+---
+kind: Deploy
+name: frontend
+description: Frontend service container
+type: container
+dependencies:
+  - build.frontend
+  - deploy.backend
+variables:
+  env:
+    PORT: 8080
+spec:
+  image: ${actions.build.frontend.outputs.deploymentImageId}
+  ports:
+    - name: http
+      containerPort: 8080
+  healthCheck:
+    httpGet:
+      path: /hello-frontend
+      port: http
+  ingresses:
+    - path: /hello-frontend
+      port: http
+    - path: /call-backend
+      port: http
+  env: ${var.env}
+
+---
+kind: Test
+name: frontend-unit
+description: Frontend service unit tests
+type: container
+dependencies:
+  - build.frontend
+  - deploy.frontend
+spec:
+  args: [npm, test]
+  env: ${actions.deploy.frontend.var.env}
+  image: ${actions.build.frontend.outputs.deploymentImageId}
+
+---
+kind: Test
+name: frontend-integ
+description: Frontend service integration tests
+type: container
+dependencies:
+  - build.frontend
+  - deploy.frontend
+spec:
+  args: [npm, run, integ]
+  env: ${actions.deploy.frontend.var.env}
+  image: ${actions.build.frontend.outputs.deploymentImageId}
+
+---
+kind: Build
+name: frontend-local
+type: exec
+buildAtSource: true
+include: []
+
+---
+kind: Deploy
+name: frontend-local
+type: exec
+dependencies:
+  - build.frontend-local
+spec:
+  persistent: true
+  deployCommand: ["yarn", "run", "dev"]
+  statusCommand: ["./check-local-status.sh"]
+  env: ${actions.deploy.frontend.var.env}

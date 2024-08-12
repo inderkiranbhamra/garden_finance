@@ -1,0 +1,16 @@
+kind: Build
+description: Image for the API backend for the voting UI
+type: container
+name: api-image
+
+---
+kind: Test
+name: api-integ
+type: container
+timeout: 60
+dependencies:
+  - build.api-image
+  - deploy.api
+spec:
+  image: ${actions.build.api-image.outputs.deploymentImageId}
+  args: [python, /app/test.py]

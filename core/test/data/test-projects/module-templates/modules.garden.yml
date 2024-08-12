@@ -1,0 +1,7 @@
+kind: Module
+type: templated
+template: combo
+name: foo
+inputs:
+  name: test
+  value: ${providers.test-plugin.outputs.testKey}

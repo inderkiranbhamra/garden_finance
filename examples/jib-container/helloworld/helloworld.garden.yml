@@ -1,0 +1,14 @@
+kind: Build
+type: jib-container
+name: helloworld
+spec:
+  # Push to local docker daemon when running a local cluster
+  # Note: You could also specify a deploymentRegistry or set the `image` field if you prefer to push to a registry,
+  #       but that'll obviously be much slower.
+  dockerBuild: ${environment.name == "local"}
+
+---
+kind: Deploy
+type: container
+name: helloworld
+build: helloworld

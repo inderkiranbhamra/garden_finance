@@ -1,0 +1,28 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": [
+    "src/**/*.ts",
+    "test/*.ts",
+    "test/e2e/*.ts",
+    "test/e2e/**/*.ts",
+    "test/helpers/*.ts",
+    "test/helpers/**/*.ts",
+    "test/integ/*.ts",
+    "test/integ/src/**/*.ts",
+    "test/manual/*.ts",
+    "test/manual/src/**/*.ts",
+    "test/unit/*.ts",
+    "test/unit/src/**/*.ts",
+    "src/commands/dev.tsx",
+    "src/util/ink-divider.tsx",
+    "package.json",
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "build",
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
+  }
+}

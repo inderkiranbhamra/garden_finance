@@ -1,0 +1,13 @@
+kind: Build
+type: container
+name: circleci-runner
+description: Used for the core pipeline in CircleCI
+variables:
+  image-name: gardendev/circleci-runner
+  release-tag: 22.6.0-0
+spec:
+  publishId: ${var.image-name}:${var.release-tag}
+  localId: ${var.image-name}
+  dockerfile: Dockerfile
+  platforms: [ "linux/amd64" ]
+  extraFlags: [ "--push"]

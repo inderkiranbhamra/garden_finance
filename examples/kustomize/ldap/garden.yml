@@ -1,0 +1,7 @@
+kind: Deploy
+type: kubernetes
+name: ldap
+spec:
+  kustomize:
+    # Pick an overlay based on the environment name
+    path: ./overlays/${environment.name}

@@ -1,0 +1,13 @@
+kind: Module
+name: module-b
+type: test
+services:
+  - name: service-b
+    command: [echo, "${modules.module-a.version}"]
+    dependencies:
+      - service-a
+build:
+  command: [echo, "${var.service-a-build-command}"]
+tests:
+  - name: unit
+    command: [echo, OK]

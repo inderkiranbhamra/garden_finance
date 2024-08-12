@@ -1,0 +1,18 @@
+kind: Module
+name: module-f
+type: container
+image: scratch
+services:
+  - name: service-f
+    dependencies:
+      - service-c
+    ingresses:
+      - path: /path-f
+        port: http
+    ports:
+      - name: http
+        containerPort: 8080
+build:
+  dependencies:
+    - module-c
+  command: [echo, F]

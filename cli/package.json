@@ -1,0 +1,61 @@
+{
+  "name": "@garden-io/cli",
+  "version": "0.13.37",
+  "description": "Cloud native testing platform for testing and developing container applications on Kubernetes",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garden-io/garden.git"
+  },
+  "author": "Garden Technologies, Inc. <info@garden.io>",
+  "license": "MPL-2.0",
+  "homepage": "https://github.com/garden-io/garden",
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
+  "preferGlobal": true,
+  "private": true,
+  "files": [
+    "build"
+  ],
+  "bin": {
+    "garden": "bin/garden.js"
+  },
+  "dependencies": {
+    "@garden-io/core": "*",
+    "@garden-io/garden-conftest": "*",
+    "@garden-io/garden-conftest-container": "*",
+    "@garden-io/garden-conftest-kubernetes": "*",
+    "@garden-io/garden-jib": "*",
+    "@garden-io/garden-pulumi": "*",
+    "@garden-io/garden-terraform": "*",
+    "@scg82/exit-hook": "^3.4.1",
+    "chalk": "^5.3.0",
+    "tar": "^6.2.1",
+    "undici": "^6.19.2",
+    "unzipper": "^0.10.14"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/fs-extra": "^11.0.4",
+    "@types/mocha": "^10.0.7",
+    "@types/tar": "^6.1.11",
+    "@types/unzipper": "^0.10.9",
+    "chai": "^5.0.3",
+    "fs-extra": "^11.2.0",
+    "lodash-es": "^4.17.21",
+    "minimist": "^1.2.8",
+    "mocha": "^10.6.0",
+    "typescript": "^5.5.3"
+  },
+  "scripts": {
+    "build": "tsc --build . --verbose && npm run generate-docs",
+    "check-package-lock": "git diff-index --quiet HEAD -- package-lock.json || (echo 'package-lock.json is dirty!' && exit 1)",
+    "clean": "shx rm -rf build dist",
+    "fix-format": "npm run lint -- --fix --quiet",
+    "generate-docs": "node ./build/src/generate-docs.js",
+    "lint": "eslint --ext .ts src/",
+    "test": "mocha"
+  }
+}

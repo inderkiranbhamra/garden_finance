@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": [
+    "./src/*.ts",
+    "./src/**/*.ts"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "build",
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
+  },
+  "references": [
+    { "path": "../core" }
+  ]
+}

@@ -1,0 +1,22 @@
+kind: Module
+name: module-a
+type: exec
+build:
+  command: [echo, A]
+tasks:
+  - name: banana
+    command: [echo, BANANA]
+    dependencies: [orange]
+  - name: orange
+    command: [echo, ORANGE]
+    timeout: 999
+tests:
+  - name: unit
+    command: [echo, OK]
+    env:
+      FOO: boo
+services:
+  - name: apple
+    deployCommand: [touch deployed.log && echo deployed]
+    statusCommand: [test -f deployed.log && echo already deployed]
+    cleanupCommand: [rm -f deployed.log && echo cleaned up]

@@ -1,0 +1,8 @@
+reporter: spec
+require:
+  - build/test/setup.js
+spec:
+  - build/test/**/*.js
+timeout: 20000
+watch-files:
+  - build/**/*.js

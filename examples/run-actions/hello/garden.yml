@@ -1,0 +1,43 @@
+kind: Build
+name: hello
+type: container
+
+---
+kind: Deploy
+name: hello
+description: Greeting service
+type: container
+dependencies:
+  - build.hello
+  - run.node-migration
+spec:
+  args: [npm, start]
+  ports:
+    - name: http
+      containerPort: 8080
+  ingresses:
+    - path: /hello
+      port: http
+  image: ${actions.build.hello.outputs.deploymentImageId}
+
+---
+kind: Test
+name: hello-unit
+type: container
+dependencies:
+  - build.hello
+spec:
+  args: [npm, test]
+  image: ${actions.build.hello.outputs.deploymentImageId}
+
+---
+kind: Run
+name: node-migration
+type: container
+dependencies:
+  - build.hello
+  - deploy.postgres
+description: Creates the users table.
+spec:
+  args: [/bin/sh, -c, "sleep 15 && knex migrate:latest"]
+  image: ${actions.build.hello.outputs.deploymentImageId}

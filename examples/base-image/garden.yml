@@ -1,0 +1,8 @@
+apiVersion: garden.io/v1
+kind: Project
+name: base-image
+environments:
+  - name: dev
+  - name: prod
+providers:
+  - name: local-kubernetes

@@ -1,0 +1,9 @@
+apiVersion: garden.io/v1
+kind: Project
+name: test-project-variable-versioning
+environments:
+  - name: local
+providers:
+  - name: test-plugin
+variables:
+  echo-string: OK

@@ -1,0 +1,11 @@
+apiVersion: garden.io/v1
+kind: Project
+name: test-project-templated
+defaultEnvironment: "${local.env.TEST_VARIABLE == 'banana' ? 'local' : 'local'}"
+environments:
+  - name: local
+providers:
+  - name: test-plugin
+variables:
+  some: ${local.env.TEST_VARIABLE}
+  service-a-build-command: OK

@@ -1,0 +1,27 @@
+version: 2.1
+
+setup: true
+
+orbs:
+  path-filtering: circleci/path-filtering@0.0.2
+
+# We are using a setup workflow here to filter based on the path of changed resources
+# and then continue the workflow with continue-config.yml based on the filters.
+# So far we only exclude dockerhub tests from running on PRs unless files in ./support changed.
+workflows:
+  setup-workflow:
+    jobs:
+      - path-filtering/filter:
+          base-revision: main
+          config-path: .circleci/continue-config.yml
+          mapping: |
+            support/.* run-test-dockerhub true
+            .circleci/.* run-test-dockerhub true
+          # By default circleci runs on all branches, but not on all tags.
+          # This filter adds all tags to trigger the workflows defined in continue-config.yml
+          # Adding the branch filter is necessary to first filter for tags.
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/

@@ -1,0 +1,23 @@
+apiVersion: garden.io/v1
+kind: Project
+name: custom-commands-invalid
+environments:
+  - name: local
+providers:
+  - name: exec
+
+---
+kind: Command
+name: invalid
+floo: blorg
+
+---
+kind: Command
+name: echo
+description:
+  short: Just echo a string
+exec:
+  command:
+    - sh
+    - -c
+    - echo ${join(args.$all, ' ')}

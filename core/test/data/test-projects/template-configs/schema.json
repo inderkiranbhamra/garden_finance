@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "builder": {
+      "type": "string",
+      "default": "standard"
+    },
+    "some_flag": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

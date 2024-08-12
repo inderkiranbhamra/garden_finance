@@ -1,0 +1,3 @@
+Hello I am file!
+input: ${inputs.value}
+module reference: ${modules["${parent.name}-${inputs.name}-a"].path}

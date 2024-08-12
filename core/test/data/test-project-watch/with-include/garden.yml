@@ -1,0 +1,4 @@
+kind: Module
+name: with-include
+type: test
+include: ["subdir/foo2.txt"]

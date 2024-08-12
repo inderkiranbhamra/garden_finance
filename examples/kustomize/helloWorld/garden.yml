@@ -1,0 +1,10 @@
+kind: Deploy
+type: kubernetes
+name: hello-world
+spec:
+  kustomize:
+    # This is actually the default (running `kustomize build` in the module root), just setting it explicitly for clarity.
+    path: .
+    extraArgs:
+      # Note: Not actually using this here, just setting as an example
+      - --enable-alpha-plugins

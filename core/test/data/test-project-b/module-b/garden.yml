@@ -1,0 +1,22 @@
+kind: Module
+name: module-b
+type: test
+services:
+  - name: service-b
+    timeout: 600
+    ingresses:
+      - path: /path-b
+        port: http
+    ports:
+      - name: http
+        containerPort: 8080
+    dependencies:
+      - service-a
+      - task-b
+build:
+  command: [echo, B]
+  dependencies:
+    - module-a
+tasks:
+  - name: task-b
+    command: [echo, C]

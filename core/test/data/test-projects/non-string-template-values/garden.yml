@@ -1,0 +1,9 @@
+apiVersion: garden.io/v1
+kind: Project
+name: non-string-template-values
+environments:
+  - name: local
+providers:
+  - name: test-plugin
+variables:
+  allow-publish: false

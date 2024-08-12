@@ -1,0 +1,57 @@
+apiVersion: garden.io/v1
+kind: Project
+name: container
+environments:
+  - name: local
+  - name: local-remote-registry
+  - name: kaniko
+  - name: kaniko-project-namespace
+  - name: kaniko-image-override
+  - name: kaniko-remote-registry
+  - name: cluster-buildkit
+  - name: cluster-buildkit-rootless
+providers:
+  - name: local-kubernetes
+    environments: [local]
+    sync:
+      defaults:
+        exclude:
+          - "**/prefix-*"
+  - name: local-kubernetes
+    deploymentRegistry: &deploymentRegistry
+      hostname: europe-west3-docker.pkg.dev
+      namespace: garden-ci/garden-integ-tests
+    environments: [local-remote-registry]
+  - &base
+    name: local-kubernetes
+    environments: [kaniko]
+    buildMode: kaniko
+    deploymentRegistry: *deploymentRegistry
+    imagePullSecrets:
+      # Note: We populate this secret in the test code
+      - name: test-docker-auth
+      - name: test-cred-helper-auth
+  - <<: *base
+    environments: [kaniko]
+    buildMode: kaniko
+  - <<: *base
+    environments: [kaniko-project-namespace]
+    buildMode: kaniko
+  - <<: *base
+    environments: [kaniko-image-override]
+    buildMode: kaniko
+    kaniko:
+      image: gcr.io/kaniko-project/executor:v1.16.0-debug
+    deploymentRegistry: *deploymentRegistry
+  - <<: *base
+    environments: [kaniko-remote-registry]
+    buildMode: kaniko
+    deploymentRegistry: *deploymentRegistry
+  - <<: *base
+    environments: [cluster-buildkit]
+    buildMode: cluster-buildkit
+  - <<: *base
+    environments: [cluster-buildkit-rootless]
+    buildMode: cluster-buildkit
+    clusterBuildkit:
+      rootless: true

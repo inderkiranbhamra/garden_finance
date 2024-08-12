@@ -1,0 +1,39 @@
+{
+  "name": "@garden-io/garden-pulumi",
+  "version": "0.13.37",
+  "description": "Pulumi plugin for Garden",
+  "type": "module",
+  "main": "build/src/index.js",
+  "dependencies": {
+    "@garden-io/core": "*",
+    "@garden-io/sdk": "*",
+    "chalk": "^5.3.0",
+    "execa": "^8.0.1",
+    "fs-extra": "^11.2.0",
+    "js-yaml": "^4.1.0",
+    "json-merge-patch": "^1.0.2",
+    "lodash-es": "^4.17.21",
+    "slash": "^5.1.0",
+    "which": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/hapi__joi": "^17.1.9",
+    "@types/json-merge-patch": "0.0.10",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20",
+    "chai": "^5.0.3",
+    "mocha": "^10.6.0",
+    "strip-ansi": "^7.1.0"
+  },
+  "scripts": {
+    "clean": "shx rm -rf build dist",
+    "check-types": "tsc -p . --noEmit",
+    "fix-format": "npm run lint -- --fix --quiet",
+    "lint": "eslint --ignore-pattern 'test/test-project-k8s/**' --ext .ts .",
+    "test": "mocha"
+  },
+  "author": "Garden Technologies, Inc. <info@garden.io>",
+  "license": "MPL-2.0",
+  "homepage": "https://github.com/garden-io/garden"
+}

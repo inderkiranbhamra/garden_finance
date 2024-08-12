@@ -1,0 +1,10 @@
+kind: Deploy
+description: Redis service for queueing votes before they are aggregated
+type: container
+name: redis
+spec:
+  image: redis:alpine
+  ports:
+    - name: redis
+      protocol: TCP
+      containerPort: 6379

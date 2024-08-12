@@ -1,0 +1,6 @@
+kind: Module
+name: module-e
+type: exec
+local: true
+build:
+  command: [echo, E]

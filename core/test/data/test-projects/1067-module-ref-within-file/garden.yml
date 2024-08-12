@@ -1,0 +1,24 @@
+apiVersion: garden.io/v1
+kind: Project
+name: issue-1067
+environments:
+  - name: default
+providers:
+  - name: container
+---
+kind: Module
+name: container-module
+include: ["*"]
+type: container
+allowPublish: false
+image: foo
+---
+kind: Module
+type: exec
+allowPublish: false
+include: ["*"]
+name: exec-module
+build:
+  command:
+    - echo
+    - "${modules.container-module.path}"

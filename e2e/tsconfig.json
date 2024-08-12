@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": [
+    "*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "build/**/*"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "build",
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
+  },
+  "references": [
+    {
+      "path": "../cli"
+    },
+    { "path": "../core" }
+  ]
+}

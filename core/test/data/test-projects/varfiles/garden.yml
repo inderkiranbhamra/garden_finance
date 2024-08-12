@@ -1,0 +1,5 @@
+apiVersion: garden.io/v1
+kind: Project
+name: varfiles
+environments:
+  - name: default

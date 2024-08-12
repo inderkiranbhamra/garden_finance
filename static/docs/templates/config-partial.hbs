@@ -1,0 +1,34 @@
+{{#each keys}}
+
+### `{{{title}}}`
+{{#if breadCrumbs}}
+
+{{{breadCrumbs}}}
+{{/if}}
+{{#if experimentalFeature}}
+
+{% hint style="warning" %}
+**Experimental**: this is an experimental feature and the API might change in the future.
+{% endhint %}
+{{/if}}
+{{#if deprecated}}
+
+{% hint style="warning" %}
+**Deprecated**: {{ deprecatedDescription }}
+{% endhint %}
+{{/if}}
+{{#if description}}
+
+{{{description}}}
+{{/if}}
+
+{{{table}}}
+{{#if formattedExample}}
+
+Example:
+
+```yaml
+{{{formattedExample}}}
+```
+{{/if}}
+{{/each}}

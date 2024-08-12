@@ -1,0 +1,5 @@
+kind: Module
+name: module-a
+type: test
+build:
+  command: ["${modules.module-a.version}"]

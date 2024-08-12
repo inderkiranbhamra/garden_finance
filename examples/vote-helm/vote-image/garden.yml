@@ -1,0 +1,14 @@
+kind: Build
+description: The voting UI container image
+name: vote-image
+type: container
+
+---
+kind: Test
+name: vote-unit
+type: container
+dependencies:
+  - build.vote-image
+spec:
+  image: ${actions.build.vote-image.outputs.deploymentImageId}
+  args: [npm, run, test:unit]

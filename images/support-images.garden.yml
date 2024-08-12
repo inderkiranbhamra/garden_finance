@@ -1,0 +1,7 @@
+apiVersion: garden.io/v1
+kind: Project
+name: garden-support-images
+environments:
+  - name: local
+providers:
+  - name: container

@@ -1,0 +1,32 @@
+kind: Build
+type: container
+name: buildkit
+description: Used for the cluster-buildkit build mode in the kubernetes provider
+variables:
+  image-name: gardendev/buildkit
+  release-tag: v0.13.2
+spec:
+  publishId: ${var.image-name}:${var.release-tag}
+  localId: ${var.image-name}
+  dockerfile: Dockerfile
+  targetStage: buildkit
+  platforms: [ "linux/amd64", "linux/arm64" ]
+  extraFlags: [ "--push"]
+---
+
+kind: Build
+type: container
+name: buildkit-rootless
+description: Used for the cluster-buildkit build mode in the kubernetes provider, rootless variant
+dependencies:
+  - build.buildkit
+variables:
+  image-name: gardendev/buildkit
+  release-tag: v0.13.2-rootless
+spec:
+  publishId: ${var.image-name}:${var.release-tag}
+  localId: ${var.image-name}
+  dockerfile: Dockerfile
+  targetStage: buildkit-rootless
+  platforms: [ "linux/amd64", "linux/arm64" ]
+  extraFlags: [ "--push"]

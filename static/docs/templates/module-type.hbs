@@ -1,0 +1,57 @@
+---
+title: "{{{frontmatterTitle}}}"
+tocTitle: "`{{{name}}}`"
+---
+
+# {{{frontmatterTitle}}}
+
+{% hint style="warning" %}
+Modules are deprecated and will be removed in version `0.14`. Please use [action](../../using-garden/actions.md)-based configuration instead. See the [0.12 to Bonsai migration guide](../../guides/migrating-to-bonsai.md) for details.
+{% endhint %}
+
+## Description
+
+{{{docs}}}
+
+Below is the full schema reference. For an introduction to configuring Garden modules, please look at our [Configuration
+guide](../../using-garden/configuration-overview.md).
+
+The [first section](#complete-yaml-schema) contains the complete YAML schema, and the [second section](#configuration-keys) describes each schema key.
+
+{{#if hasOutputs}}
+`{{{name}}}` modules also export values that are available in template strings. See the [Outputs](#outputs) section below for details.
+
+{{/if}}
+## Complete YAML Schema
+
+The values in the schema below are the default values.
+
+```yaml
+{{{yaml}}}
+```
+
+## Configuration Keys
+{{{markdownReference}}}
+{{#if hasOutputs}}
+
+## Outputs
+{{/if}}
+{{#if moduleOutputsReference}}
+
+### Module Outputs
+
+The following keys are available via the `${modules.<module-name>}` template string key for `{{{name}}}`
+modules.
+{{{moduleOutputsReference}}}{{/if}}{{#if serviceOutputsReference}}
+
+### Service Outputs
+
+The following keys are available via the `${runtime.services.<service-name>}` template string key for `{{{name}}}` module services.
+Note that these are only resolved when deploying/running dependants of the service, so they are not usable for every field.
+{{{serviceOutputsReference}}}{{/if}}{{#if taskOutputsReference}}
+
+### Task Outputs
+
+The following keys are available via the `${runtime.tasks.<task-name>}` template string key for `{{{name}}}` module tasks.
+Note that these are only resolved when deploying/running dependants of the task, so they are not usable for every field.
+{{{taskOutputsReference}}}{{/if}}

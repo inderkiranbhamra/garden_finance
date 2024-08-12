@@ -1,0 +1,68 @@
+kind: Build
+name: a
+type: container
+exclude: [Dockerfile-b]
+spec:
+  dockerfile: Dockerfile-a
+
+---
+kind: Deploy
+name: a
+description: Node service A
+type: container
+dependencies:
+  - build.a
+spec:
+  image: ${actions.build.a.outputs.deploymentImageId}
+  command: [npm, start]
+  ports:
+    - name: http
+      containerPort: 8080
+  ingresses:
+    - path: /hello-a
+      port: http
+
+---
+kind: Test
+name: a-unit
+type: container
+dependencies:
+  - build.a
+spec:
+  args: [npm, test]
+  image: ${actions.build.a.outputs.deploymentImageId}
+
+---
+kind: Build
+name: b
+type: container
+exclude: [Dockerfile-a]
+spec:
+  dockerfile: Dockerfile-b
+
+---
+kind: Deploy
+name: b
+description: Node service B
+type: container
+dependencies:
+  - build.b
+spec:
+  image: ${actions.build.b.outputs.deploymentImageId}
+  command: [npm, start]
+  ports:
+    - name: http
+      containerPort: 8080
+  ingresses:
+    - path: /hello-b
+      port: http
+
+---
+kind: Test
+name: b-unit
+type: container
+dependencies:
+  - build.b
+spec:
+  args: [npm, test]
+  image: ${actions.build.b.outputs.deploymentImageId}

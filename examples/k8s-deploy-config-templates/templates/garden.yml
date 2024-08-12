@@ -1,0 +1,60 @@
+kind: ConfigTemplate
+name: k8s-deploy
+inputsSchemaPath: ./k8s-schema.json
+
+configs:
+  - kind: Build
+    type: container
+    name: ${parent.name}
+    description: ${parent.name} image
+    source:
+      path: ${inputs.relativeSourcePath}
+
+  - kind: Deploy
+    type: kubernetes
+    name: ${parent.name}
+    description: ${parent.name} manifests
+    source:
+      path: ${inputs.relativeProjectRoot}
+
+    dependencies:
+      - build.${parent.name}
+      - $concat: "${inputs.dependencies || []}"
+
+    spec:
+      files: ${inputs.manifests}
+
+      # Default target for syncs and exec commands
+      defaultTarget:
+        kind: Deployment
+        name: ${parent.name}
+
+      # Patch the K8s manifests so that we can set the correct image and other variables.
+      patchResources:
+        - name: ${parent.name}
+          kind: Deployment
+          patch:
+            spec:
+              replicas: 1
+              template:
+                spec:
+                  containers:
+                    - name: ${parent.name}
+                      image: ${actions.build[parent.name].outputs.deployment-image-id}
+                      env: ${inputs.env}
+                  imagePullSecrets:
+                    - name: ${var.imagePullSecretName}
+
+      # Conditionally enable sync
+      sync:
+        $if: ${inputs.enableSync}
+        $then:
+          paths:
+            - sourcePath: ${inputs.relativeSourcePath}
+              containerPath: ${inputs.containerPath}
+              mode: "one-way-replica"
+              # Hard code common excludes
+              exclude:
+                - ${inputs.relativeSourcePath}/node-modules
+          overrides:
+            - command: ${inputs.syncCommand}

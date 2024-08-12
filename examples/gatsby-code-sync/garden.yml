@@ -1,0 +1,37 @@
+apiVersion: garden.io/v1
+kind: Project
+name: gatsby-sync
+environments:
+  - name: local
+providers:
+  - name: local-kubernetes
+
+---
+kind: Build
+name: website
+type: container
+
+---
+kind: Deploy
+description: Minimal Gatsby example
+name: website
+type: container
+dependencies:
+  - build.website
+spec:
+  sync:
+    paths:
+      - source: src
+        target: /app/src
+        exclude: [node_modules]
+        mode: one-way
+  args: [npm, run, dev]
+  env:
+    GATSBY_WEBPACK_PUBLICPATH: /
+  ports:
+    - name: http
+      containerPort: 8000
+  ingresses:
+    - path: /
+      port: http
+  image: ${actions.build.website.outputs.deploymentImageId}

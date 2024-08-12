@@ -1,0 +1,54 @@
+kind: Build
+name: node-service
+description: Node service container image
+type: container
+
+---
+kind: Deploy
+name: node-service
+description: Node service container
+type: container
+
+dependencies:
+  - build.node-service
+  - deploy.go-service
+
+spec:
+  image: ${actions.build.node-service.outputs.deploymentImageId}
+  args: [ npm, start ]
+  ports:
+    - name: http
+      containerPort: 8080
+  ingresses:
+    - path: /hello
+      port: http
+    - path: /call-go-service
+      port: http
+
+---
+kind: Test
+name: node-service-unit
+description: Node service container unit tests
+type: container
+
+dependencies:
+  - build.node-service
+
+spec:
+  image: ${actions.build.node-service.outputs.deploymentImageId}
+  command: [ npm, test ]
+
+---
+kind: Test
+name: node-service-integ
+description: Node service container integration tests
+type: container
+
+dependencies:
+  - build.node-service
+  - deploy.go-service
+
+spec:
+  image: ${actions.build.node-service.outputs.deploymentImageId}
+  command: [ npm, run, integ ]
+

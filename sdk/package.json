@@ -1,0 +1,35 @@
+{
+  "name": "@garden-io/sdk",
+  "version": "0.13.37",
+  "description": "TypeScript plugin SDK for Garden",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garden-io/garden.git"
+  },
+  "author": "Garden Technologies, Inc. <info@garden.io>",
+  "license": "MPL-2.0",
+  "homepage": "https://github.com/garden-io/garden",
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
+  "preferGlobal": true,
+  "private": true,
+  "main": "build/src/index.js",
+  "dependencies": {
+    "@garden-io/core": "*",
+    "minimist": "^1.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "prettier": "3.2.5",
+    "typescript": "^5.5.3"
+  },
+  "scripts": {
+    "check-package-lock": "git diff-index --quiet HEAD -- package-lock.json || (echo 'package-lock.json is dirty!' && exit 1)",
+    "clean": "shx rm -rf build",
+    "fix-format": "npm run lint -- --fix --quiet",
+    "lint": "eslint --ext .ts ."
+  }
+}

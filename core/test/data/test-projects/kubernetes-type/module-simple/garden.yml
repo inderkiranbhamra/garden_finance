@@ -1,0 +1,69 @@
+kind: Module
+type: kubernetes
+name: module-simple
+description: Simple Kubernetes module with minimum config
+manifests:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: busybox-deployment
+      labels:
+        app: busybox
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: busybox
+      template:
+        metadata:
+          labels:
+            app: busybox
+        spec:
+          containers:
+            - name: busybox
+              image: busybox:1.31.1
+              args: [sh, -c, "while :; do sleep 2073600; done"]
+              env:
+                - name: FOO
+                  value: banana
+                - name: BAR
+                  value: ""
+                - name: BAZ
+                  value: null
+              ports:
+                - containerPort: 80
+serviceResource:
+  kind: Deployment
+  name: busybox-deployment
+tests:
+  - name: echo-test
+    command: [sh, -c, "echo ok"]
+tasks:
+  - name: echo-task
+    command: [sh, -c, "echo ok"]
+
+---
+
+kind: Run
+name: echo-run-exec
+type: kubernetes-exec
+dependencies:
+  - deploy.module-simple
+spec:
+  resource:
+    kind: Deployment
+    name: busybox-deployment
+  command: [echo, ok]
+
+---
+
+kind: Test
+name: echo-test-exec
+type: kubernetes-exec
+dependencies:
+  - deploy.module-simple
+spec:
+  resource:
+    kind: Deployment
+    name: busybox-deployment
+  command: [echo, ok]

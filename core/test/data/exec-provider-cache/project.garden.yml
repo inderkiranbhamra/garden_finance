@@ -1,0 +1,9 @@
+apiVersion: garden.io/v1
+kind: Project
+name: incident-repro
+environments:
+  - name: one
+  - name: two
+providers:
+  - name: exec
+    initScript: "echo '${environment.name}' > theFile"

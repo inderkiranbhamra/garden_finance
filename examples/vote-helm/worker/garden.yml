@@ -1,0 +1,9 @@
+kind: Deploy
+description: Helm deploy for the worker container
+type: helm
+name: worker-deploy
+spec:
+  values:
+    image:
+      repository: ${actions.build.worker-image.outputs.deployment-image-name}
+      tag: ${actions.build.worker-image.version}

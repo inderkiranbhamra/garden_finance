@@ -1,0 +1,29 @@
+kind: Build
+name: backend
+type: container
+
+---
+kind: Deploy
+name: backend
+description: Backend service container
+type: container
+dependencies:
+  - build.backend
+
+variables:
+  httpPort:
+    name: http
+    servicePort: 80
+    containerPort: 8080
+  debugPort:
+    name: debug
+    containerPort: 12345
+    localPort: 12345
+
+spec:
+  replicas: ${var.service-replicas}
+  ports: "${this.mode == 'sync' ? [var.httpPort, var.debugPort] : [var.httpPort] }"
+  ingresses:
+    - path: /hello-backend
+      port: http
+  image: ${actions.build.backend.outputs.deploymentImageId}

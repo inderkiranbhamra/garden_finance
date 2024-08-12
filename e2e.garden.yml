@@ -1,0 +1,25 @@
+kind: Module
+name: e2e-tests
+type: exec
+tests:
+  - name: demo-project
+    command: [npm, run, e2e-project, --, --project=demo-project, "--showlog=${var.show-log}", "--env=remote"]
+    timeout: ${var.timeout}
+  - name: kaniko
+    command: [npm, run, e2e-project, --, --project=kaniko, "--showlog=${var.show-log}", "--env=remote"]
+    timeout: ${var.timeout}
+  - name: tasks # Tests for tasks are currently being skipped
+    command: [npm, run, e2e-project, --, --project=tasks, "--showlog=${var.show-log}", "--env=${environment.name}"]
+    timeout: ${var.timeout}
+  - name: variables
+    command: [npm, run, e2e-project, --, --project=variables, "--showlog=${var.show-log}", "--env=${environment.name}"]
+    timeout: ${var.timeout}
+  - name: vote-helm
+    command: [npm, run, e2e-project, --, --project=vote-helm, "--showlog=${var.show-log}", "--env=${environment.name}"]
+    timeout: ${var.timeout}
+  - name: vote
+    command: [npm, run, e2e-project, --, --project=vote, "--showlog=${var.show-log}", "--env=${environment.name}"]
+    timeout: ${var.timeout}
+  - name: remote-sources
+    command: [npm, run, e2e-project, --, --project=remote-sources, "--showlog=${var.show-log}", "--env=${environment.name}"]
+    timeout: ${var.timeout}
